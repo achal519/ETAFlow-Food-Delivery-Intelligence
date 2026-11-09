@@ -1,0 +1,157 @@
+{
+  "active_version": "v1.0.0",
+  "updated_at_utc": "2026-10-29T14:48:32.987147+00:00",
+  "versions": {
+    "v0.1.0-dummy": {
+      "version": "v0.1.0-dummy",
+      "model_identity": "dummy_regressor",
+      "algorithm": "DummyRegressor(mean)",
+      "stage": "Archived",
+      "is_active": false,
+      "registration_timestamp": "2026-10-29T14:48:32.956255+00:00",
+      "dataset_fingerprint": "a76ed049cd698b189797b180ffce60dcdad7b45b99729cd171b5562ec585eb0c",
+      "training_rows": 31171,
+      "test_rows": 7793,
+      "feature_columns": [
+        "distance_km",
+        "Restaurant_latitude",
+        "Restaurant_longitude",
+        "Delivery_location_latitude",
+        "Delivery_location_longitude",
+        "order_hour",
+        "day_of_week",
+        "is_weekend",
+        "Type_of_order",
+        "Festival",
+        "City"
+      ],
+      "encoded_feature_count": 17,
+      "hyperparameters": {
+        "strategy": "mean"
+      },
+      "evaluation_metrics": {
+        "mae": 7.4305,
+        "rmse": 9.2257,
+        "r2": -0.0001,
+        "mape": 33.33
+      },
+      "artifacts": {
+        "model_artifact": {
+          "artifact_name": "model_artifact",
+          "relative_path": "models/dummy_regressor.joblib",
+          "sha256_hash": "372924f004041a7f1cd406431d76793a6e95e5f88bbfa93061efb9d21aa3d744",
+          "size_bytes": 1071
+        },
+        "preprocessor_artifact": {
+          "artifact_name": "preprocessor_artifact",
+          "relative_path": "models/preprocessor.joblib",
+          "sha256_hash": "39d7f65fbd4b9dce9783c949b9f9cfdf94941a7548ca749b9281e7a371f86dcf",
+          "size_bytes": 5736
+        }
+      },
+      "notes": "Floor baseline predicting training set mean duration."
+    },
+    "v0.2.0-ridge": {
+      "version": "v0.2.0-ridge",
+      "model_identity": "ridge_regressor",
+      "algorithm": "Ridge(alpha=1.0)",
+      "stage": "Archived",
+      "is_active": false,
+      "registration_timestamp": "2026-10-29T14:48:32.956255+00:00",
+      "dataset_fingerprint": "a76ed049cd698b189797b180ffce60dcdad7b45b99729cd171b5562ec585eb0c",
+      "training_rows": 31171,
+      "test_rows": 7793,
+      "feature_columns": [
+        "distance_km",
+        "Restaurant_latitude",
+        "Restaurant_longitude",
+        "Delivery_location_latitude",
+        "Delivery_location_longitude",
+        "order_hour",
+        "day_of_week",
+        "is_weekend",
+        "Type_of_order",
+        "Festival",
+        "City"
+      ],
+      "encoded_feature_count": 17,
+      "hyperparameters": {
+        "alpha": 1.0,
+        "random_state": 42
+      },
+      "evaluation_metrics": {
+        "mae": 6.6154,
+        "rmse": 8.1635,
+        "r2": 0.2169,
+        "mape": 29.54
+      },
+      "artifacts": {
+        "model_artifact": {
+          "artifact_name": "model_artifact",
+          "relative_path": "models/ridge_regressor.joblib",
+          "sha256_hash": "a7b4e25a370e28095d695baa88bd9ffcd67deef2137a335a5348ae78929b2a23",
+          "size_bytes": 1361
+        },
+        "preprocessor_artifact": {
+          "artifact_name": "preprocessor_artifact",
+          "relative_path": "models/preprocessor.joblib",
+          "sha256_hash": "39d7f65fbd4b9dce9783c949b9f9cfdf94941a7548ca749b9281e7a371f86dcf",
+          "size_bytes": 5736
+        }
+      },
+      "notes": "Linear L2-regularized baseline."
+    },
+    "v1.0.0": {
+      "version": "v1.0.0",
+      "model_identity": "random_forest_regressor",
+      "algorithm": "RandomForestRegressor(n=100, depth=16, leaf=4)",
+      "stage": "Production",
+      "is_active": true,
+      "registration_timestamp": "2026-10-29T14:48:32.987147+00:00",
+      "dataset_fingerprint": "a76ed049cd698b189797b180ffce60dcdad7b45b99729cd171b5562ec585eb0c",
+      "training_rows": 31171,
+      "test_rows": 7793,
+      "feature_columns": [
+        "distance_km",
+        "Restaurant_latitude",
+        "Restaurant_longitude",
+        "Delivery_location_latitude",
+        "Delivery_location_longitude",
+        "order_hour",
+        "day_of_week",
+        "is_weekend",
+        "Type_of_order",
+        "Festival",
+        "City"
+      ],
+      "encoded_feature_count": 17,
+      "hyperparameters": {
+        "n_estimators": 100,
+        "max_depth": 16,
+        "min_samples_leaf": 4,
+        "random_state": 42
+      },
+      "evaluation_metrics": {
+        "mae": 6.1406,
+        "rmse": 7.6987,
+        "r2": 0.3036,
+        "mape": 27.41
+      },
+      "artifacts": {
+        "model_artifact": {
+          "artifact_name": "model_artifact",
+          "relative_path": "models/random_forest_regressor.joblib",
+          "sha256_hash": "06e82f2af40bb5ab85f673e4f0ec9763bb3fb333807bfbcaf8a18bc72c93da3a",
+          "size_bytes": 24176225
+        },
+        "preprocessor_artifact": {
+          "artifact_name": "preprocessor_artifact",
+          "relative_path": "models/preprocessor.joblib",
+          "sha256_hash": "39d7f65fbd4b9dce9783c949b9f9cfdf94941a7548ca749b9281e7a371f86dcf",
+          "size_bytes": 5736
+        }
+      },
+      "notes": "Production champion model selected for online serving."
+    }
+  }
+}

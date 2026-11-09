@@ -1,0 +1,523 @@
+{
+  "report_title": "ETAFlow Data & Prediction Drift Monitoring Report",
+  "generated_at_utc": "2026-10-29T15:31:29.547485+00:00",
+  "dataset_fingerprint": "a76ed049cd698b189797b180ffce60dcdad7b45b99729cd171b5562ec585eb0c",
+  "sample_size_per_batch": 1500,
+  "monitoring_thresholds": {
+    "psi_warning": 0.1,
+    "psi_alert": 0.2,
+    "ks_p_value_alpha": 0.05,
+    "chi2_p_value_alpha": 0.05
+  },
+  "clean_batch_results": {
+    "batch_label": "clean_held_out_test_batch",
+    "evaluated_at_utc": "2026-10-29T15:31:28.708203+00:00",
+    "is_synthetic": false,
+    "sample_size": 1500,
+    "total_features_evaluated": 17,
+    "drifted_features_count": 0,
+    "warning_features_count": 0,
+    "overall_status": "STABLE",
+    "thresholds": {
+      "psi_warning": 0.1,
+      "psi_alert": 0.2,
+      "p_value_threshold": 0.05
+    },
+    "prediction_drift": {
+      "psi": 0.0101,
+      "test_applied": "kolmogorov_smirnov",
+      "ks_statistic": 0.02767,
+      "p_value": 0.3342853736563133,
+      "current_mean_prediction_min": 26.51,
+      "reference_mean_prediction_min": 26.6051,
+      "status": "STABLE"
+    },
+    "features": {
+      "num__distance_km": {
+        "feature_type": "numeric",
+        "psi": 0.0083,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.03207,
+        "p_value": 0.1824607078636552,
+        "status": "STABLE",
+        "current_mean": -0.0347,
+        "reference_mean": -0.0
+      },
+      "num__Restaurant_latitude": {
+        "feature_type": "numeric",
+        "psi": 0.0051,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.02427,
+        "p_value": 0.49777065737841175,
+        "status": "STABLE",
+        "current_mean": -0.0006,
+        "reference_mean": -0.0
+      },
+      "num__Restaurant_longitude": {
+        "feature_type": "numeric",
+        "psi": 0.0038,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.01373,
+        "p_value": 0.9794793807667375,
+        "status": "STABLE",
+        "current_mean": 0.0145,
+        "reference_mean": 0.0
+      },
+      "num__Delivery_location_latitude": {
+        "feature_type": "numeric",
+        "psi": 0.0048,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.0238,
+        "p_value": 0.522920986635109,
+        "status": "STABLE",
+        "current_mean": -0.0008,
+        "reference_mean": 0.0
+      },
+      "num__Delivery_location_longitude": {
+        "feature_type": "numeric",
+        "psi": 0.0053,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.01653,
+        "p_value": 0.905554747198068,
+        "status": "STABLE",
+        "current_mean": 0.0141,
+        "reference_mean": 0.0
+      },
+      "num__order_hour": {
+        "feature_type": "numeric",
+        "psi": 0.0091,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.02707,
+        "p_value": 0.3603053789547393,
+        "status": "STABLE",
+        "current_mean": -0.043,
+        "reference_mean": 0.0
+      },
+      "num__day_of_week": {
+        "feature_type": "numeric",
+        "psi": 0.0018,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.01073,
+        "p_value": 0.999203309477936,
+        "status": "STABLE",
+        "current_mean": -0.0021,
+        "reference_mean": -0.0
+      },
+      "num__is_weekend": {
+        "feature_type": "numeric",
+        "psi": 0.0,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.00247,
+        "p_value": 1.0,
+        "status": "STABLE",
+        "current_mean": -0.0147,
+        "reference_mean": 0.0
+      },
+      "cat__Type_of_order_Buffet": {
+        "feature_type": "categorical",
+        "psi": 0.0,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.0079,
+        "p_value": 0.9290325775420983,
+        "status": "STABLE",
+        "current_counts": {
+          "0.0": 1126,
+          "1.0": 374
+        },
+        "reference_counts": {
+          "0.0": 23430,
+          "1.0": 7741
+        }
+      },
+      "cat__Type_of_order_Drinks": {
+        "feature_type": "categorical",
+        "psi": 0.0003,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.4731,
+        "p_value": 0.4915563619085527,
+        "status": "STABLE",
+        "current_counts": {
+          "0.0": 1139,
+          "1.0": 361
+        },
+        "reference_counts": {
+          "0.0": 23430,
+          "1.0": 7741
+        }
+      },
+      "cat__Type_of_order_Meal": {
+        "feature_type": "categorical",
+        "psi": 0.0002,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.339,
+        "p_value": 0.5604033626017613,
+        "status": "STABLE",
+        "current_counts": {
+          "0.0": 1116,
+          "1.0": 384
+        },
+        "reference_counts": {
+          "0.0": 23394,
+          "1.0": 7777
+        }
+      },
+      "cat__Type_of_order_Snack": {
+        "feature_type": "categorical",
+        "psi": 0.0,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.0002,
+        "p_value": 0.9876220351464755,
+        "status": "STABLE",
+        "current_counts": {
+          "0.0": 1119,
+          "1.0": 381
+        },
+        "reference_counts": {
+          "0.0": 23259,
+          "1.0": 7912
+        }
+      },
+      "cat__Festival_No": {
+        "feature_type": "categorical",
+        "psi": 0.0005,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.6669,
+        "p_value": 0.41415025027488617,
+        "status": "STABLE",
+        "current_counts": {
+          "1.0": 1474,
+          "0.0": 26
+        },
+        "reference_counts": {
+          "1.0": 30538,
+          "0.0": 633
+        }
+      },
+      "cat__Festival_Yes": {
+        "feature_type": "categorical",
+        "psi": 0.0005,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.6669,
+        "p_value": 0.41415025027488617,
+        "status": "STABLE",
+        "current_counts": {
+          "0.0": 1474,
+          "1.0": 26
+        },
+        "reference_counts": {
+          "0.0": 30538,
+          "1.0": 633
+        }
+      },
+      "cat__City_Metropolitian": {
+        "feature_type": "categorical",
+        "psi": 0.0007,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.979,
+        "p_value": 0.3224562704704232,
+        "status": "STABLE",
+        "current_counts": {
+          "1.0": 1171,
+          "0.0": 329
+        },
+        "reference_counts": {
+          "1.0": 23999,
+          "0.0": 7172
+        }
+      },
+      "cat__City_Semi-Urban": {
+        "feature_type": "categorical",
+        "psi": 0.0001,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.0925,
+        "p_value": 0.7610026218687435,
+        "status": "STABLE",
+        "current_counts": {
+          "0.0": 1495,
+          "1.0": 5
+        },
+        "reference_counts": {
+          "0.0": 31052,
+          "1.0": 119
+        }
+      },
+      "cat__City_Urban": {
+        "feature_type": "categorical",
+        "psi": 0.0006,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.9033,
+        "p_value": 0.3418885438762202,
+        "status": "STABLE",
+        "current_counts": {
+          "0.0": 1176,
+          "1.0": 324
+        },
+        "reference_counts": {
+          "0.0": 24118,
+          "1.0": 7053
+        }
+      }
+    }
+  },
+  "simulated_drift_results": {
+    "batch_label": "simulated_drift_monsoon_surge",
+    "evaluated_at_utc": "2026-10-29T15:31:29.522877+00:00",
+    "is_synthetic": true,
+    "sample_size": 1500,
+    "total_features_evaluated": 17,
+    "drifted_features_count": 4,
+    "warning_features_count": 0,
+    "overall_status": "ALERT",
+    "thresholds": {
+      "psi_warning": 0.1,
+      "psi_alert": 0.2,
+      "p_value_threshold": 0.05
+    },
+    "prediction_drift": {
+      "psi": 3.0296,
+      "test_applied": "kolmogorov_smirnov",
+      "ks_statistic": 0.43727,
+      "p_value": 1.820408891494903e-199,
+      "current_mean_prediction_min": 33.38,
+      "reference_mean_prediction_min": 26.6051,
+      "status": "ALERT"
+    },
+    "features": {
+      "num__distance_km": {
+        "feature_type": "numeric",
+        "psi": 14.1864,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.7424,
+        "p_value": 1.25e-321,
+        "status": "ALERT",
+        "current_mean": 2.4529,
+        "reference_mean": -0.0
+      },
+      "num__Restaurant_latitude": {
+        "feature_type": "numeric",
+        "psi": 0.0051,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.02427,
+        "p_value": 0.49777065737841175,
+        "status": "STABLE",
+        "current_mean": -0.0006,
+        "reference_mean": -0.0
+      },
+      "num__Restaurant_longitude": {
+        "feature_type": "numeric",
+        "psi": 0.0038,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.01373,
+        "p_value": 0.9794793807667375,
+        "status": "STABLE",
+        "current_mean": 0.0145,
+        "reference_mean": 0.0
+      },
+      "num__Delivery_location_latitude": {
+        "feature_type": "numeric",
+        "psi": 0.0048,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.0238,
+        "p_value": 0.522920986635109,
+        "status": "STABLE",
+        "current_mean": -0.0008,
+        "reference_mean": 0.0
+      },
+      "num__Delivery_location_longitude": {
+        "feature_type": "numeric",
+        "psi": 0.0053,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.01653,
+        "p_value": 0.905554747198068,
+        "status": "STABLE",
+        "current_mean": 0.0141,
+        "reference_mean": 0.0
+      },
+      "num__order_hour": {
+        "feature_type": "numeric",
+        "psi": 12.9869,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.72467,
+        "p_value": 1.42e-321,
+        "status": "ALERT",
+        "current_mean": 1.7417,
+        "reference_mean": 0.0
+      },
+      "num__day_of_week": {
+        "feature_type": "numeric",
+        "psi": 0.0018,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.01073,
+        "p_value": 0.999203309477936,
+        "status": "STABLE",
+        "current_mean": -0.0021,
+        "reference_mean": -0.0
+      },
+      "num__is_weekend": {
+        "feature_type": "numeric",
+        "psi": 0.0,
+        "test_applied": "kolmogorov_smirnov",
+        "ks_statistic": 0.00247,
+        "p_value": 1.0,
+        "status": "STABLE",
+        "current_mean": -0.0147,
+        "reference_mean": 0.0
+      },
+      "cat__Type_of_order_Buffet": {
+        "feature_type": "categorical",
+        "psi": 0.0,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.0079,
+        "p_value": 0.9290325775420983,
+        "status": "STABLE",
+        "current_counts": {
+          "0.0": 1126,
+          "1.0": 374
+        },
+        "reference_counts": {
+          "0.0": 23430,
+          "1.0": 7741
+        }
+      },
+      "cat__Type_of_order_Drinks": {
+        "feature_type": "categorical",
+        "psi": 0.0003,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.4731,
+        "p_value": 0.4915563619085527,
+        "status": "STABLE",
+        "current_counts": {
+          "0.0": 1139,
+          "1.0": 361
+        },
+        "reference_counts": {
+          "0.0": 23430,
+          "1.0": 7741
+        }
+      },
+      "cat__Type_of_order_Meal": {
+        "feature_type": "categorical",
+        "psi": 0.0002,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.339,
+        "p_value": 0.5604033626017613,
+        "status": "STABLE",
+        "current_counts": {
+          "0.0": 1116,
+          "1.0": 384
+        },
+        "reference_counts": {
+          "0.0": 23394,
+          "1.0": 7777
+        }
+      },
+      "cat__Type_of_order_Snack": {
+        "feature_type": "categorical",
+        "psi": 0.0,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.0002,
+        "p_value": 0.9876220351464755,
+        "status": "STABLE",
+        "current_counts": {
+          "0.0": 1119,
+          "1.0": 381
+        },
+        "reference_counts": {
+          "0.0": 23259,
+          "1.0": 7912
+        }
+      },
+      "cat__Festival_No": {
+        "feature_type": "categorical",
+        "psi": 1.6485,
+        "test_applied": "chi_square",
+        "chi2_statistic": 14753.6274,
+        "p_value": 0.0,
+        "status": "ALERT",
+        "current_counts": {
+          "1.0": 806,
+          "0.0": 694
+        },
+        "reference_counts": {
+          "1.0": 30538,
+          "0.0": 633
+        }
+      },
+      "cat__Festival_Yes": {
+        "feature_type": "categorical",
+        "psi": 1.6485,
+        "test_applied": "chi_square",
+        "chi2_statistic": 14753.6274,
+        "p_value": 0.0,
+        "status": "ALERT",
+        "current_counts": {
+          "0.0": 806,
+          "1.0": 694
+        },
+        "reference_counts": {
+          "0.0": 30538,
+          "1.0": 633
+        }
+      },
+      "cat__City_Metropolitian": {
+        "feature_type": "categorical",
+        "psi": 0.0007,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.979,
+        "p_value": 0.3224562704704232,
+        "status": "STABLE",
+        "current_counts": {
+          "1.0": 1171,
+          "0.0": 329
+        },
+        "reference_counts": {
+          "1.0": 23999,
+          "0.0": 7172
+        }
+      },
+      "cat__City_Semi-Urban": {
+        "feature_type": "categorical",
+        "psi": 0.0001,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.0925,
+        "p_value": 0.7610026218687435,
+        "status": "STABLE",
+        "current_counts": {
+          "0.0": 1495,
+          "1.0": 5
+        },
+        "reference_counts": {
+          "0.0": 31052,
+          "1.0": 119
+        }
+      },
+      "cat__City_Urban": {
+        "feature_type": "categorical",
+        "psi": 0.0006,
+        "test_applied": "chi_square",
+        "chi2_statistic": 0.9033,
+        "p_value": 0.3418885438762202,
+        "status": "STABLE",
+        "current_counts": {
+          "0.0": 1176,
+          "1.0": 324
+        },
+        "reference_counts": {
+          "0.0": 24118,
+          "1.0": 7053
+        }
+      }
+    }
+  },
+  "executive_summary": {
+    "clean_batch_stable": true,
+    "drift_batch_alerted": true,
+    "primary_drift_drivers": [
+      "num__distance_km",
+      "num__order_hour",
+      "cat__Festival_No",
+      "cat__Festival_Yes"
+    ],
+    "prediction_drift_detected": true
+  }
+}

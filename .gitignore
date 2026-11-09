@@ -4,7 +4,7 @@
 venv/
 env/
 
-# Python cache files
+# Python cache
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -14,7 +14,7 @@ __pycache__/
 .env.*
 !.env.example
 
-# IDE and operating system files
+# IDE and OS files
 .vscode/
 .idea/
 .DS_Store
@@ -22,3 +22,42 @@ Thumbs.db
 
 # Logs and temporary files
 *.log
+scratch_chrome/
+*.zip
+
+# Dataset files: exclude by default
+*.csv
+!data/raw/zomato_cleaned.csv
+!data/processed/*.csv
+
+# Keep data placeholders
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/reference/.gitkeep
+
+# Model artifacts: exclude by default
+*.pkl
+*.joblib
+!models/*.joblib
+
+# Keep model registry and required model files
+!models/.gitkeep
+!models/registry.json
+
+# MLflow local experiment data
+mlruns/
+mlartifacts/
+mlflow.db
+
+# Generated artifacts
+artifacts/
+
+# Testing and coverage
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Reports
+reports/figures/*
+!reports/.gitkeep

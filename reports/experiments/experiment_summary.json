@@ -1,0 +1,74 @@
+{
+  "experiment_name": "etaflow-delivery-intelligence",
+  "experiment_id": "1",
+  "tracking_uri": "sqlite:///mlflow.db",
+  "total_runs": 3,
+  "generated_at_utc": "2026-10-29T15:08:26.897939+00:00",
+  "runs": [
+    {
+      "run_id": "c634b80082c9458997051c12f640a847",
+      "run_name": "baseline-dummy",
+      "status": "FINISHED",
+      "start_time": "2026-10-29T15:08:25.809000+00:00",
+      "model_type": "DummyRegressor",
+      "version": "v0.1.0",
+      "stage": "Archived",
+      "parameters": {
+        "strategy": "mean",
+        "model_class": "DummyRegressor"
+      },
+      "metrics": {
+        "mae_minutes": 7.4305,
+        "rmse_minutes": 9.2257,
+        "r2_score": -0.0001,
+        "mape_percent": 33.33
+      },
+      "artifact_uri": "file:///C:/Users/hp/OneDrive/Desktop/ETAFlow/ETAFlow-Food-Delivery-Intelligence/mlartifacts/c634b80082c9458997051c12f640a847/artifacts"
+    },
+    {
+      "run_id": "411fae108d4f4196b3d4bcabe9814065",
+      "run_name": "linear-ridge",
+      "status": "FINISHED",
+      "start_time": "2026-10-29T15:08:26.175000+00:00",
+      "model_type": "Ridge",
+      "version": "v0.2.0",
+      "stage": "Archived",
+      "parameters": {
+        "alpha": "1.0",
+        "random_state": "42",
+        "model_class": "Ridge"
+      },
+      "metrics": {
+        "mae_minutes": 6.6154,
+        "rmse_minutes": 8.1635,
+        "r2_score": 0.2169,
+        "mape_percent": 29.54
+      },
+      "artifact_uri": "file:///C:/Users/hp/OneDrive/Desktop/ETAFlow/ETAFlow-Food-Delivery-Intelligence/mlartifacts/411fae108d4f4196b3d4bcabe9814065/artifacts"
+    },
+    {
+      "run_id": "b8cec028b1e94914b99cf8ceba06717f",
+      "run_name": "champion-random-forest",
+      "status": "FINISHED",
+      "start_time": "2026-10-29T15:08:26.592000+00:00",
+      "model_type": "RandomForestRegressor",
+      "version": "v1.0.0",
+      "stage": "Production",
+      "parameters": {
+        "n_estimators": "100",
+        "max_depth": "16",
+        "min_samples_leaf": "4",
+        "n_jobs": "-1",
+        "random_state": "42",
+        "model_class": "RandomForestRegressor"
+      },
+      "metrics": {
+        "mae_minutes": 6.1406,
+        "rmse_minutes": 7.6987,
+        "r2_score": 0.3036,
+        "mape_percent": 27.41
+      },
+      "artifact_uri": "file:///C:/Users/hp/OneDrive/Desktop/ETAFlow/ETAFlow-Food-Delivery-Intelligence/mlartifacts/b8cec028b1e94914b99cf8ceba06717f/artifacts"
+    }
+  ]
+}

@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ETAFlow — Smart Delivery Intelligence Platform</title>
+  <meta name="description" content="AI-Powered Food Delivery ETA and MLOps Platform featuring Random Forest duration inference, MLflow experiment tracking, statistical data & prediction drift monitoring, model registry governance, and deterministic operations simulation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="operations.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <!-- Brand Header -->
+      <div class="sidebar-brand">
+        <div class="brand-icon-wrapper">
+          <span class="brand-icon">⚡</span>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">ETA<span class="gradient-text">Flow</span></span>
+          <span class="brand-badge">MLOPS PLATFORM</span>
+        </div>
+      </div>
+
+      <!-- Mode Pill -->
+      <div class="sidebar-mode-banner">
+        <span class="mode-dot"></span>
+        <span class="mode-text">MLOBSERVABILITY ACTIVE</span>
+      </div>
+
+      <!-- Main Navigation -->
+      <nav class="sidebar-nav">
+        <!-- PRIMARY MLOPS PLATFORM SECTIONS -->
+        <span class="nav-section-title">MLOPS PLATFORM</span>
+        <button class="nav-item active" data-tab="tab-mlops-overview" id="nav-mlops-overview">
+          <span class="nav-icon">⚡</span>
+          <span class="nav-label">MLOps Overview</span>
+          <span class="nav-indicator"></span>
+        </button>
+        <button class="nav-item" data-tab="tab-data-pipeline" id="nav-data-pipeline">
+          <span class="nav-icon">📦</span>
+          <span class="nav-label">Data & Pipeline</span>
+        </button>
+        <button class="nav-item" data-tab="tab-experiments" id="nav-experiments">
+          <span class="nav-icon">🧪</span>
+          <span class="nav-label">Experiments</span>
+          <span class="nav-badge" id="experiments-count-badge">3</span>
+        </button>
+        <button class="nav-item" data-tab="tab-model-registry" id="nav-model-registry">
+          <span class="nav-icon">🏷️</span>
+          <span class="nav-label">Model Registry</span>
+          <span class="nav-badge" id="registry-count-badge">v1.0</span>
+        </button>
+        <button class="nav-item" data-tab="tab-predict" id="nav-predict">
+          <span class="nav-icon">🎯</span>
+          <span class="nav-label">Live Inference</span>
+        </button>
+        <button class="nav-item" data-tab="tab-monitoring-drift" id="nav-monitoring-drift">
+          <span class="nav-icon">📈</span>
+          <span class="nav-label">Monitoring & Drift</span>
+          <span class="nav-badge" id="drift-status-badge">STABLE</span>
+        </button>
+        <button class="nav-item" data-tab="tab-model" id="nav-model">
+          <span class="nav-icon">🏆</span>
+          <span class="nav-label">Model Evaluation</span>
+        </button>
+        <button class="nav-item" data-tab="tab-governance" id="nav-governance">
+          <span class="nav-icon">🛡️</span>
+          <span class="nav-label">Reports & Governance</span>
+        </button>
+
+        <!-- APPENDIX: SYNTHETIC DEMO -->
+        <span class="nav-section-title" style="margin-top:0.75rem;">APPENDIX: SYNTHETIC DEMO</span>
+        <button class="nav-item" data-tab="tab-operations" id="nav-operations">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Operations Overview</span>
+        </button>
+        <button class="nav-item" data-tab="tab-simulation" id="nav-simulation">
+          <span class="nav-icon">🎮</span>
+          <span class="nav-label">Live Simulation</span>
+          <span class="nav-badge live-pulse-badge" id="sim-running-badge" style="display:none;">LIVE</span>
+        </button>
+        <button class="nav-item" data-tab="tab-fleet" id="nav-fleet">
+          <span class="nav-icon">🛵</span>
+          <span class="nav-label">Fleet & Orders</span>
+          <span class="nav-badge" id="fleet-count-badge">7</span>
+        </button>
+        <button class="nav-item" data-tab="tab-scenarios" id="nav-scenarios">
+          <span class="nav-icon">⚖️</span>
+          <span class="nav-label">Scenario Lab</span>
+          <span class="nav-badge" id="scenarios-count-badge">0</span>
+        </button>
+        <button class="nav-item" data-tab="tab-delay" id="nav-delay">
+          <span class="nav-icon">⏱️</span>
+          <span class="nav-label">Delay Analytics</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Footer Status Card -->
+      <div class="sidebar-footer">
+        <div class="system-status-card status-healthy" id="sidebar-status-card">
+          <div class="status-indicator-row">
+            <div class="status-ping-container">
+              <span class="status-dot-solid" id="sidebar-status-dot"></span>
+            </div>
+            <span class="status-label" id="sidebar-status-label">API Healthy</span>
+            <button type="button" class="btn-refresh-pulse" id="btn-refresh-status" title="Re-check API health">🔄</button>
+          </div>
+          <div class="status-meta-grid">
+            <div class="status-meta-item">
+              <span class="meta-label">Active Model:</span>
+              <span class="meta-value" id="status-meta-model">RandomForest v1.0</span>
+            </div>
+            <div class="status-meta-item">
+              <span class="meta-label">Backend URI:</span>
+              <span class="meta-value">127.0.0.1:8000</span>
+            </div>
+            <div class="status-meta-item">
+              <span class="meta-label">Tracking:</span>
+              <span class="meta-value">MLflow (SQLite)</span>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-footnote">
+          ETAFlow MLOps v1.0.0 • Python 3.11
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Viewport -->
+    <main class="main-viewport">
+      <!-- Sticky Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button type="button" class="btn-sidebar-toggle" id="btn-sidebar-toggle" aria-label="Toggle Navigation">☰</button>
+          <div class="page-title-group">
+            <h1 id="topbar-page-title">MLOps Platform Overview</h1>
+            <p id="topbar-page-subtitle">Production model lifecycle, experiment tracking & statistical drift guard</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Active Model Chip -->
+          <div class="topbar-chip chip-lavender" title="Active Model registered in models/registry.json">
+            <span>🏷️</span>
+            <span>Champion: <strong id="topbar-model-id">v1.0.0 (Production)</strong></span>
+          </div>
+
+          <!-- Live API Status Chip -->
+          <div class="topbar-chip chip-mint" id="topbar-status-chip" title="FastAPI HTTP service status">
+            <span class="status-dot-chip" id="topbar-status-dot"></span>
+            <span id="topbar-status-text">API Online (Port 8000)</span>
+          </div>
+
+          <!-- Drift Guard Chip -->
+          <div class="topbar-chip chip-blue" title="Statistical distribution monitoring">
+            <span>📈</span>
+            <span>Drift Guard: <strong id="topbar-drift-chip">STABLE</strong></span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Global Alert Banner -->
+      <div class="alert-banner alert-danger hidden" id="global-alert">
+        <span class="alert-icon">⚠️</span>
+        <div class="alert-body" id="alert-message">
+          Prediction service connection error. Ensure backend is running via <code>python pipelines/serve_api.py</code>.
+        </div>
+        <button type="button" class="btn-dismiss" id="btn-dismiss-alert" aria-label="Dismiss">✕</button>
+      </div>
+
+      <!-- Main Content Container with Tabs -->
+      <div class="content-container">
+
+        <!-- ========================================================
+             SECTION 1: MLOPS OVERVIEW
+        ======================================================== -->
+        <section id="tab-mlops-overview" class="tab-pane active">
+          <!-- Platform Executive KPI Grid -->
+          <div class="kpi-stat-grid">
+            <div class="stat-card border-lavender">
+              <div class="stat-header">
+                <span class="stat-label">Active Champion Model</span>
+                <span class="stat-badge badge-lavender">Production</span>
+              </div>
+              <div class="stat-value">Random Forest</div>
+              <div class="stat-desc">Version <strong>v1.0.0</strong> • MAE: <strong class="font-mono text-accent">6.14 min</strong></div>
+            </div>
+
+            <div class="stat-card border-mint">
+              <div class="stat-header">
+                <span class="stat-label">API Health & Latency</span>
+                <span class="stat-badge badge-mint" id="overview-health-badge">Healthy</span>
+              </div>
+              <div class="stat-value"><span id="overview-latency-val">2.8</span> <span class="stat-unit">ms</span></div>
+              <div class="stat-desc">Measured p50 inference latency via <code>/metrics</code></div>
+            </div>
+
+            <div class="stat-card border-blue">
+              <div class="stat-header">
+                <span class="stat-label">Prediction Drift (PSI)</span>
+                <span class="stat-badge badge-blue" id="overview-drift-badge">Stable</span>
+              </div>
+              <div class="stat-value font-mono" id="overview-psi-val">0.0101</div>
+              <div class="stat-desc">Clean held-out test distribution (0 of 17 features drifted)</div>
+            </div>
+
+            <div class="stat-card border-coral">
+              <div class="stat-header">
+                <span class="stat-label">Data Provenance</span>
+                <span class="stat-badge badge-coral">38,964 Rows</span>
+              </div>
+              <div class="stat-value font-mono">100%</div>
+              <div class="stat-desc">Raw schema validated • SHA-256 fingerprint verified</div>
+            </div>
+          </div>
+
+          <!-- MLOps Pipeline Flowchart Card -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">🔄</span>
+                <div>
+                  <h2>End-to-End MLOps System Lifecycle</h2>
+                  <p class="card-subtitle">Continuous handoffs from raw data audit to serving and statistical drift telemetry</p>
+                </div>
+              </div>
+              <div class="table-actions">
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-trigger-probe">⚡ Send Live Probe</button>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:1rem; margin:1rem 0;">
+              <div style="background:var(--bg-subtle); border:1px solid var(--border-card); border-radius:var(--radius-md); padding:1rem;">
+                <div style="font-size:0.75rem; font-weight:800; color:var(--accent-purple); text-transform:uppercase;">1. Data & Provenance</div>
+                <div style="font-weight:700; margin-top:0.25rem;">zomato_cleaned.csv</div>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">38,964 records partitioned 80/20 with SHA-256 fingerprinting.</div>
+              </div>
+
+              <div style="background:var(--bg-subtle); border:1px solid var(--border-card); border-radius:var(--radius-md); padding:1rem;">
+                <div style="font-size:0.75rem; font-weight:800; color:var(--accent-cyan); text-transform:uppercase;">2. Feature Pipeline</div>
+                <div style="font-weight:700; margin-top:0.25rem;">11 Tier 1 Features</div>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">Haversine distance & cyclical encoding. HTTP 400 rejection for leakage.</div>
+              </div>
+
+              <div style="background:var(--bg-subtle); border:1px solid var(--border-card); border-radius:var(--radius-md); padding:1rem;">
+                <div style="font-size:0.75rem; font-weight:800; color:var(--accent-emerald); text-transform:uppercase;">3. Experiment Tracking</div>
+                <div style="font-weight:700; margin-top:0.25rem;">MLflow (SQLite)</div>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">3 candidate models tracked: Dummy, Ridge, and Random Forest champion.</div>
+              </div>
+
+              <div style="background:var(--bg-subtle); border:1px solid var(--border-card); border-radius:var(--radius-md); padding:1rem;">
+                <div style="font-size:0.75rem; font-weight:800; color:var(--accent-purple); text-transform:uppercase;">4. Model Registry</div>
+                <div style="font-weight:700; margin-top:0.25rem;">registry.json</div>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">Version manifests, artifact byte hashes, and lifecycle stages.</div>
+              </div>
+
+              <div style="background:var(--bg-subtle); border:1px solid var(--border-card); border-radius:var(--radius-md); padding:1rem;">
+                <div style="font-size:0.75rem; font-weight:800; color:var(--accent-rose); text-transform:uppercase;">5. Serving & Telemetry</div>
+                <div style="font-weight:700; margin-top:0.25rem;">FastAPI HTTP API</div>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;"><code>POST /predict</code> & <code>GET /metrics</code> with real percentile latency timing.</div>
+              </div>
+
+              <div style="background:var(--bg-subtle); border:1px solid var(--border-card); border-radius:var(--radius-md); padding:1rem;">
+                <div style="font-size:0.75rem; font-weight:800; color:var(--accent-amber); text-transform:uppercase;">6. Drift Guard</div>
+                <div style="font-weight:700; margin-top:0.25rem;">PSI / KS / Chi²</div>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">Continuous data & prediction shift alerts against baseline stats.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Telemetry Card -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">📊</span>
+                <div>
+                  <h2>Live API Telemetry Monitor (GET /metrics)</h2>
+                  <p class="card-subtitle">Real-time latency stopwatch and throughput counters from active prediction server</p>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:1rem;">
+              <div class="stat-card" style="box-shadow:none; background:var(--bg-subtle);">
+                <span class="stat-label">Total Requests</span>
+                <span class="stat-value font-mono" id="telem-total-requests">0</span>
+              </div>
+              <div class="stat-card" style="box-shadow:none; background:var(--bg-subtle);">
+                <span class="stat-label">Successful Predictions</span>
+                <span class="stat-value font-mono text-success" id="telem-success-predictions">0</span>
+              </div>
+              <div class="stat-card" style="box-shadow:none; background:var(--bg-subtle);">
+                <span class="stat-label">Latest Latency</span>
+                <span class="stat-value font-mono" id="telem-latest-latency">0.0 ms</span>
+              </div>
+              <div class="stat-card" style="box-shadow:none; background:var(--bg-subtle);">
+                <span class="stat-label">P50 Latency</span>
+                <span class="stat-value font-mono text-accent" id="telem-p50-latency">0.0 ms</span>
+              </div>
+              <div class="stat-card" style="box-shadow:none; background:var(--bg-subtle);">
+                <span class="stat-label">P95 Latency</span>
+                <span class="stat-value font-mono" id="telem-p95-latency">0.0 ms</span>
+              </div>
+              <div class="stat-card" style="box-shadow:none; background:var(--bg-subtle);">
+                <span class="stat-label">Server Uptime</span>
+                <span class="stat-value font-mono" id="telem-uptime">0s</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             SECTION 2: DATA & PIPELINE
+        ======================================================== -->
+        <section id="tab-data-pipeline" class="tab-pane">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">📦</span>
+                <div>
+                  <h2>Dataset Provenance & Schema Integrity</h2>
+                  <p class="card-subtitle">Audited historical food delivery dataset and automated schema validation report</p>
+                </div>
+              </div>
+              <span class="status-pill pill-stable">Validated</span>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem;">
+              <div>
+                <h3 style="font-size:0.95rem; margin-bottom:0.75rem;">Source & Partition Splits</h3>
+                <div class="code-box" style="margin-bottom:0.75rem;">
+                  <strong>Dataset Path:</strong> data/raw/zomato_cleaned.csv<br>
+                  <strong>SHA-256 Fingerprint:</strong> <span id="data-raw-fingerprint">a76ed049cd698b189797b180ffce60dcdad7b45b99729cd171b5562ec585eb0c</span><br>
+                  <strong>Total Dataset Rows:</strong> 38,964 rows (22 columns)<br>
+                  <strong>Training Split:</strong> 31,171 rows (80.0%, random_state=42)<br>
+                  <strong>Held-Out Test Split:</strong> 7,793 rows (20.0%, untouched evaluation set)<br>
+                  <strong>Target Variable:</strong> delivery_duration_min (checkout to doorstep)
+                </div>
+              </div>
+
+              <div>
+                <h3 style="font-size:0.95rem; margin-bottom:0.75rem;">Schema Validation Audit (reports/validation/)</h3>
+                <div class="code-box">
+                  <strong>Schema Status:</strong> PASSED (0 fatal schema errors)<br>
+                  <strong>Range Errors:</strong> 0 (latitudes in [-90, 90], longitudes in [-180, 180])<br>
+                  <strong>Categorical Errors:</strong> 0 (City, Festival, Type_of_order match domain)<br>
+                  <strong>Missing Required Columns:</strong> 0<br>
+                  <strong>Handled Imputations:</strong> Delivery_person_Age (1,019), Time_Orderd (835)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Leakage-Safe Feature Store -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">🛡️</span>
+                <div>
+                  <h2>Leakage-Safe Feature Store Architecture</h2>
+                  <p class="card-subtitle">Strict boundary separating Tier 1 booking-time inputs from forbidden post-booking fields</p>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+              <div>
+                <h3 style="font-size:0.95rem; color:var(--accent-emerald); margin-bottom:0.5rem;">
+                  ✅ Tier 1: Allowed at Booking Time (Passed to Model)
+                </h3>
+                <p style="font-size:0.8125rem; color:var(--text-secondary); margin-bottom:0.75rem;">
+                  These 11 attributes are strictly known when the customer confirms checkout:
+                </p>
+                <div>
+                  <span class="feature-tag tier-allowed">distance_km (Haversine)</span>
+                  <span class="feature-tag tier-allowed">Restaurant_latitude</span>
+                  <span class="feature-tag tier-allowed">Restaurant_longitude</span>
+                  <span class="feature-tag tier-allowed">Delivery_location_latitude</span>
+                  <span class="feature-tag tier-allowed">Delivery_location_longitude</span>
+                  <span class="feature-tag tier-allowed">order_hour [0-23]</span>
+                  <span class="feature-tag tier-allowed">day_of_week [0-6]</span>
+                  <span class="feature-tag tier-allowed">is_weekend [0, 1]</span>
+                  <span class="feature-tag tier-allowed">Type_of_order (Meal, Snack...)</span>
+                  <span class="feature-tag tier-allowed">Festival (No, Yes)</span>
+                  <span class="feature-tag tier-allowed">City (Metropolitian, Urban...)</span>
+                </div>
+              </div>
+
+              <div>
+                <h3 style="font-size:0.95rem; color:var(--accent-rose); margin-bottom:0.5rem;">
+                  🚫 Forbidden Post-Booking Fields (HTTP 400 Rejected)
+                </h3>
+                <p style="font-size:0.8125rem; color:var(--text-secondary); margin-bottom:0.75rem;">
+                  Attempting to pass any of these fields triggers an immediate 400 rejection to prevent data leakage:
+                </p>
+                <div>
+                  <span class="feature-tag tier-forbidden">delivery_speed (Target Leakage)</span>
+                  <span class="feature-tag tier-forbidden">Time_taken (min) (Ground Truth)</span>
+                  <span class="feature-tag tier-forbidden">Time_Order_picked</span>
+                  <span class="feature-tag tier-forbidden">actual_pickup_time</span>
+                  <span class="feature-tag tier-forbidden">actual_transit_time</span>
+                  <span class="feature-tag tier-forbidden">Delivery_person_ID</span>
+                  <span class="feature-tag tier-forbidden">Delivery_person_Ratings</span>
+                  <span class="feature-tag tier-forbidden">multiple_deliveries</span>
+                  <span class="feature-tag tier-forbidden">Type_of_vehicle</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             SECTION 3: EXPERIMENTS
+        ======================================================== -->
+        <section id="tab-experiments" class="tab-pane">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">🧪</span>
+                <div>
+                  <h2>MLflow Experiment Tracking Lab</h2>
+                  <p class="card-subtitle">Synchronized directly from <code>reports/experiments/experiment_summary.json</code> and SQLite tracking store</p>
+                </div>
+              </div>
+              <div style="font-size:0.78125rem; font-family:var(--font-mono); color:var(--text-muted);">
+                Experiment: <strong class="text-accent" id="exp-name-display">etaflow-delivery-intelligence</strong> (ID: 1)
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Model / Run Name</th>
+                    <th>Algorithm</th>
+                    <th>Version</th>
+                    <th>Stage</th>
+                    <th>MAE (min)</th>
+                    <th>RMSE (min)</th>
+                    <th>R² Score</th>
+                    <th>MAPE (%)</th>
+                    <th>Hyperparameters</th>
+                    <th>Run ID</th>
+                  </tr>
+                </thead>
+                <tbody id="mlflow-experiments-tbody">
+                  <!-- Dynamically loaded from experiment_summary.json -->
+                </tbody>
+              </table>
+            </div>
+
+            <div style="margin-top:1.5rem; background:var(--bg-subtle); border:1px solid var(--border-card); border-radius:var(--radius-md); padding:1rem;">
+              <h3 style="font-size:0.9rem; margin-bottom:0.5rem;">Benchmark Delta vs Baseline</h3>
+              <p style="font-size:0.8125rem; color:var(--text-secondary); line-height:1.4;">
+                • <strong>Random Forest Champion</strong> reduces Mean Absolute Error from <strong>7.43 minutes</strong> (Dummy mean) to <strong>6.14 minutes</strong>, delivering an accuracy gain of <strong>+17.4%</strong>.<br>
+                • Linear Ridge Regression achieves <strong>6.62 minutes</strong> MAE (a +11.0% improvement over floor), confirming strong non-linear spatial and peak dining interactions captured by the tree ensemble.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             SECTION 4: MODEL REGISTRY
+        ======================================================== -->
+        <section id="tab-model-registry" class="tab-pane">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">🏷️</span>
+                <div>
+                  <h2>Centralized Model Registry Manifest</h2>
+                  <p class="card-subtitle">Version control, cryptographic integrity hashes, and staging lifecycle from <code>models/registry.json</code></p>
+                </div>
+              </div>
+              <span class="status-pill pill-champion">Active: v1.0.0</span>
+            </div>
+
+            <div id="registry-versions-container">
+              <!-- Dynamically populated from models/registry.json -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             SECTION 5: LIVE INFERENCE (Preserving /predict workbench)
+        ======================================================== -->
+        <section id="tab-predict" class="tab-pane">
+          <div class="workbench-grid">
+            <!-- Left Controls Column -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <span class="card-icon">🎯</span>
+                  <div>
+                    <h2>Booking-Time ETA Inference</h2>
+                    <p class="card-subtitle">Interact with the production Random Forest model via live <code>POST /predict</code> API</p>
+                  </div>
+                </div>
+              </div>
+
+              <form id="predict-form">
+                <!-- Location Coordinates -->
+                <div style="margin-bottom:1rem;">
+                  <span class="form-label">Restaurant Coordinates (Bangalore)</span>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:0.25rem;">
+                    <input type="number" step="0.0001" class="input-control font-mono" id="inp-rest-lat" value="12.9352" required placeholder="Lat">
+                    <input type="number" step="0.0001" class="input-control font-mono" id="inp-rest-lon" value="77.6245" required placeholder="Lon">
+                  </div>
+                </div>
+
+                <div style="margin-bottom:1rem;">
+                  <span class="form-label">Customer Delivery Location</span>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:0.25rem;">
+                    <input type="number" step="0.0001" class="input-control font-mono" id="inp-cust-lat" value="12.9550" required placeholder="Lat">
+                    <input type="number" step="0.0001" class="input-control font-mono" id="inp-cust-lon" value="77.6400" required placeholder="Lon">
+                  </div>
+                </div>
+
+                <!-- Temporal inputs -->
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label" for="inp-order-hour">Order Hour: <span class="font-mono text-accent" id="lbl-order-hour">20:00</span></label>
+                    <input type="range" min="0" max="23" value="20" class="form-control" id="inp-order-hour" style="padding:0.25rem;">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label" for="inp-day-of-week">Day of Week</label>
+                    <select class="form-control" id="inp-day-of-week">
+                      <option value="0">Monday</option>
+                      <option value="1">Tuesday</option>
+                      <option value="2">Wednesday</option>
+                      <option value="3">Thursday</option>
+                      <option value="4" selected>Friday</option>
+                      <option value="5">Saturday</option>
+                      <option value="6">Sunday</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Categorical inputs -->
+                <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.5rem; margin-bottom:1.25rem;">
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label" for="inp-order-type">Order Type</label>
+                    <select class="form-control" id="inp-order-type">
+                      <option value="Meal" selected>Meal</option>
+                      <option value="Snack">Snack</option>
+                      <option value="Drinks">Drinks</option>
+                      <option value="Buffet">Buffet</option>
+                    </select>
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label" for="inp-festival">Festival</label>
+                    <select class="form-control" id="inp-festival">
+                      <option value="No" selected>No</option>
+                      <option value="Yes">Yes</option>
+                    </select>
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label" for="inp-city">City Density</label>
+                    <select class="form-control" id="inp-city">
+                      <option value="Metropolitian" selected>Metro</option>
+                      <option value="Urban">Urban</option>
+                      <option value="Semi-Urban">Semi-Urban</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="predict-btn" style="width:100%; padding:0.75rem;">
+                  <span id="predict-btn-text">⚡ Calculate Live Model ETA</span>
+                  <span class="hidden" id="predict-spinner">⏳ Calculating...</span>
+                </button>
+              </form>
+            </div>
+
+            <!-- Right Results Column -->
+            <div class="workbench-right">
+              <!-- ETA Result Box -->
+              <div class="eta-hero-box" id="predict-result-card">
+                <div style="font-size:0.75rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em;">Booking-Time Predicted ETA</div>
+                <div class="eta-hero-number" id="predict-duration-val">20.3</div>
+                <div class="eta-hero-unit">minutes</div>
+                <div style="display:flex; justify-content:center; gap:1.5rem; margin-top:1rem; font-size:0.8125rem;">
+                  <div>Distance: <strong class="font-mono" id="predict-distance-val">2.77 km</strong></div>
+                  <div>Measured Latency: <strong class="font-mono text-accent" id="predict-latency-val">3.2 ms</strong></div>
+                  <div>Model: <strong id="predict-model-id-val">random_forest_regressor</strong></div>
+                </div>
+              </div>
+
+              <!-- Map Card -->
+              <div class="card map-card">
+                <div class="card-header" style="margin-bottom:0.75rem; padding-bottom:0.5rem;">
+                  <span style="font-size:0.85rem; font-weight:700;">Spatial Verification & Drag Pins</span>
+                  <span style="font-size:0.75rem; color:var(--text-muted);" id="predict-routing-badge">OSRM Road Geometry</span>
+                </div>
+                <div class="map-frame-wrapper" id="predict-map"></div>
+                <div class="map-frame-wrapper hidden" id="predict-map-fallback" style="display:flex; align-items:center; justify-content:center; background:#FFF;">
+                  <span>Map display fallback active</span>
+                </div>
+              </div>
+
+              <!-- JSON Response Inspector -->
+              <div class="card" style="padding:1rem;">
+                <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:0.5rem;">Verified API Payload Response</div>
+                <pre class="code-box" id="predict-json-output" style="max-height:160px; margin:0;">{ "status": "Ready for prediction" }</pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             SECTION 6: MONITORING & DRIFT
+        ======================================================== -->
+        <section id="tab-monitoring-drift" class="tab-pane">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">📈</span>
+                <div>
+                  <h2>Continuous Data & Prediction Drift Monitoring</h2>
+                  <p class="card-subtitle">Statistical shift detection: Population Stability Index (PSI), Kolmogorov-Smirnov, and Chi-Square tests</p>
+                </div>
+              </div>
+
+              <!-- Clean vs Synthetic Drift Toggle -->
+              <div class="drift-toggle-wrapper">
+                <button type="button" class="drift-toggle-btn active mode-clean" id="drift-toggle-clean">
+                  <span>🌿 Clean Test Batch</span>
+                </button>
+                <button type="button" class="drift-toggle-btn mode-alert" id="drift-toggle-surge">
+                  <span>⚠️ Synthetic Surge & Weather Drift</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Drift Executive Banner -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1rem; margin-bottom:1.5rem;">
+              <div class="stat-card" style="box-shadow:none; background:var(--bg-subtle);">
+                <span class="stat-label">Batch Overall Status</span>
+                <span class="stat-value" id="drift-overall-status" style="color:var(--accent-emerald);">STABLE</span>
+                <span class="stat-desc" id="drift-status-desc">Zero statistical alerts triggered on clean test split</span>
+              </div>
+
+              <div class="stat-card" style="box-shadow:none; background:var(--bg-subtle);">
+                <span class="stat-label">Prediction Drift (PSI)</span>
+                <span class="stat-value font-mono" id="drift-pred-psi">0.0101</span>
+                <span class="stat-desc" id="drift-pred-test">KS test p-value: 0.3343 (p &gt; 0.05)</span>
+              </div>
+
+              <div class="stat-card" style="box-shadow:none; background:var(--bg-subtle);">
+                <span class="stat-label">Features Drifted</span>
+                <span class="stat-value font-mono" id="drift-features-count">0 / 17</span>
+                <span class="stat-desc">Thresholds: PSI &ge; 0.20 or p &lt; 0.05</span>
+              </div>
+
+              <div class="stat-card" style="box-shadow:none; background:var(--bg-subtle);">
+                <span class="stat-label">Recommended Action</span>
+                <span class="stat-value" style="font-size:1.15rem; color:var(--text-secondary);" id="drift-action-text">No Action Required</span>
+                <span class="stat-desc">Production distribution matches training baseline</span>
+              </div>
+            </div>
+
+            <!-- Feature-Level Drift Diagnostics Table -->
+            <h3 style="font-size:0.95rem; margin-bottom:0.75rem;">Feature Distribution Shift Diagnostics (17 Features)</h3>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Feature Name</th>
+                    <th>Type</th>
+                    <th>PSI</th>
+                    <th>Statistical Test</th>
+                    <th>Test Statistic</th>
+                    <th>p-value</th>
+                    <th>Baseline Mean</th>
+                    <th>Batch Mean</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="drift-table-body">
+                  <!-- Loaded dynamically from drift_report.json -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             SECTION 7: MODEL EVALUATION
+        ======================================================== -->
+        <section id="tab-model" class="tab-pane">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">🏆</span>
+                <div>
+                  <h2>Held-Out Test Split Benchmarks (7,793 Rows)</h2>
+                  <p class="card-subtitle">Best Model Among Tested Baselines</p>
+                </div>
+              </div>
+              <span class="status-pill pill-champion">Champion: Random Forest</span>
+            </div>
+
+            <!-- 3 Benchmark Cards -->
+            <div class="kpi-stat-grid" style="margin-bottom:1.5rem;">
+              <div class="stat-card border-coral">
+                <div class="stat-header">
+                  <span class="stat-label">Floor Baseline</span>
+                  <span class="stat-badge badge-coral">Archived</span>
+                </div>
+                <div class="stat-value" style="font-size:1.35rem;">DummyRegressor</div>
+                <div class="stat-desc">
+                  MAE: <strong class="font-mono">7.43 min</strong> • RMSE: <strong class="font-mono">9.23 min</strong><br>
+                  R²: <strong class="font-mono">-0.0001</strong> • MAPE: <strong class="font-mono">33.33%</strong>
+                </div>
+              </div>
+
+              <div class="stat-card border-blue">
+                <div class="stat-header">
+                  <span class="stat-label">Linear Surface</span>
+                  <span class="stat-badge badge-blue">Archived</span>
+                </div>
+                <div class="stat-value" style="font-size:1.35rem;">Ridge Regression</div>
+                <div class="stat-desc">
+                  MAE: <strong class="font-mono">6.62 min</strong> • RMSE: <strong class="font-mono">8.16 min</strong><br>
+                  R²: <strong class="font-mono">0.2169</strong> • MAPE: <strong class="font-mono">29.54%</strong>
+                </div>
+              </div>
+
+              <div class="stat-card border-lavender" style="background:var(--accent-lavender-bg); border-color:var(--accent-lavender-border);">
+                <div class="stat-header">
+                  <span class="stat-label">Production Champion</span>
+                  <span class="stat-badge badge-lavender">⭐ Production</span>
+                </div>
+                <div class="stat-value" style="font-size:1.35rem; color:var(--accent-purple);">Random Forest</div>
+                <div class="stat-desc">
+                  MAE: <strong class="font-mono text-accent">6.14 min</strong> • RMSE: <strong class="font-mono">7.70 min</strong><br>
+                  R²: <strong class="font-mono text-accent">0.3036</strong> • MAPE: <strong class="font-mono">27.41%</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feature Importance Section -->
+            <h3 style="font-size:0.95rem; margin-bottom:0.75rem;">Gini Impurity Reduction Feature Importance (17 Encoded Columns)</h3>
+            <div id="feature-importance-bars" style="background:var(--bg-subtle); border:1px solid var(--border-card); border-radius:var(--radius-md); padding:1.25rem;">
+              <!-- Dynamically populated or rendered -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             SECTION 8: REPORTS & GOVERNANCE
+        ======================================================== -->
+        <section id="tab-governance" class="tab-pane">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">🛡️</span>
+                <div>
+                  <h2>Data Card Audit, Governance & Anti-Leakage Compliance</h2>
+                  <p class="card-subtitle">Engineering safeguards ensuring zero temporal or target leakage during inference</p>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem;">
+              <div class="code-box">
+                <h3 style="font-size:0.85rem; color:var(--accent-purple); margin-bottom:0.5rem;">DATA PROVENANCE CARD</h3>
+                • <strong>Dataset:</strong> Public historical records (38,964 instances)<br>
+                • <strong>Split Protocol:</strong> 80% Train (31,171) / 20% Held-Out Test (7,793)<br>
+                • <strong>Target Variable:</strong> Total delivery duration from checkout to doorstep<br>
+                • <strong>Licensing:</strong> Academic & Demonstration use
+              </div>
+
+              <div class="code-box">
+                <h3 style="font-size:0.85rem; color:var(--accent-emerald); margin-bottom:0.5rem;">AUDITING & REPRODUCIBILITY</h3>
+                • <strong>Model Weights Hash:</strong> SHA-256 verified on startup<br>
+                • <strong>Preprocessor Hash:</strong> Fit exclusively on training partition<br>
+                • <strong>MLflow Runs:</strong> Immutable parameters and metrics recorded<br>
+                • <strong>Drift Thresholds:</strong> PSI &ge; 0.20 triggers automated retraining flag
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             APPENDIX: SYNTHETIC DEMO SECTIONS
+        ======================================================== -->
+
+        <!-- APPENDIX 1: OPERATIONS OVERVIEW -->
+        <section id="tab-operations" class="tab-pane">
+          <div class="operations-notice-banner">
+            <span>ℹ️</span>
+            <div><strong>Operations Telemetry:</strong> High-level overview of active simulated dispatches and fleet performance metrics.</div>
+            <span class="source-tag">Synthetic Operations Hub</span>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon-wrapper">🛵</div>
+              <div class="kpi-details">
+                <span class="kpi-label">Active Dispatches</span>
+                <span class="kpi-value" id="op-active-dispatches">3</span>
+                <span class="kpi-source">Deterministic Fleet</span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon-wrapper">🏁</div>
+              <div class="kpi-details">
+                <span class="kpi-label">Completed Deliveries</span>
+                <span class="kpi-value" id="op-completed-orders">3</span>
+                <span class="kpi-source">Simulation Engine</span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon-wrapper">🎯</div>
+              <div class="kpi-details">
+                <span class="kpi-label">SLA Compliance Rate</span>
+                <span class="kpi-value" id="op-sla-compliance">100%</span>
+                <span class="kpi-source">Within &plusmn;3 min</span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon-wrapper">⏱️</div>
+              <div class="kpi-details">
+                <span class="kpi-label">Average Predicted Duration</span>
+                <span class="kpi-value" id="op-avg-pred">21.9 <span class="kpi-unit">min</span></span>
+                <span class="kpi-source">Random Forest</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity Stream -->
+          <div class="card" style="margin-top:1.5rem;">
+            <div class="card-header">
+              <h3>Real-Time Operational Activity Stream</h3>
+            </div>
+            <div id="operations-activity-stream" style="display:flex; flex-direction:column; gap:0.5rem;">
+              <!-- Populated by app.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- APPENDIX 2: LIVE SIMULATION -->
+        <section id="tab-simulation" class="tab-pane">
+          <div class="operations-notice-banner">
+            <span>🎮</span>
+            <div><strong>Deterministic Dispatch Simulator:</strong> Courier movement along OSRM road geometry. Stages represent synthetic lifecycle progression.</div>
+            <span class="source-tag">OSRM Road Geometry</span>
+          </div>
+
+          <!-- Controls Bar -->
+          <div class="sim-controls-card">
+            <div class="sim-clock-bar">
+              <div class="sim-clock-display">
+                <span style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">SIM CLOCK:</span>
+                <span class="sim-clock-time" id="sim-clock-display">00:00:00</span>
+              </div>
+
+              <div style="display:flex; gap:0.5rem;">
+                <button type="button" class="btn btn-primary" id="btn-sim-play">▶ Start</button>
+                <button type="button" class="btn btn-secondary" id="btn-sim-pause">⏸ Pause</button>
+                <button type="button" class="btn btn-secondary" id="btn-sim-reset">🔄 Reset</button>
+              </div>
+
+              <div class="sim-speed-btn-group">
+                <button type="button" class="speed-pill" id="sim-speed-1x" data-speed="1">1x</button>
+                <button type="button" class="speed-pill" id="sim-speed-2x" data-speed="2">2x</button>
+                <button type="button" class="speed-pill active" id="sim-speed-5x" data-speed="5">5x</button>
+                <button type="button" class="speed-pill" id="sim-speed-10x" data-speed="10">10x</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="workbench-grid">
+            <!-- Active Order Card -->
+            <div class="sim-active-order-card">
+              <div class="sim-card-header">
+                <div>
+                  <h3 id="sim-card-order-id" class="font-mono" style="font-size:1.15rem;">KOR-DINNER-88</h3>
+                  <span id="sim-card-category-city" style="font-size:0.75rem; color:var(--text-muted);">Meal • Metropolitian</span>
+                </div>
+                <span id="sim-card-status-pill" class="order-status-pill status-transit">Out for Delivery</span>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                <div>
+                  <span style="font-size:0.75rem; color:var(--text-muted);">Predicted Duration</span>
+                  <div id="sim-card-predicted" class="font-mono" style="font-size:1.5rem; font-weight:800; color:var(--accent-purple);">20.3 min</div>
+                </div>
+                <div>
+                  <span style="font-size:0.75rem; color:var(--text-muted);">Elapsed (Simulated)</span>
+                  <div id="sim-card-elapsed" class="font-mono" style="font-size:1.5rem; font-weight:800;">14.0 min</div>
+                </div>
+              </div>
+
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:0.25rem;">
+                  <span id="sim-card-remaining-hint">Estimated remaining: ~6.3 mins</span>
+                  <span id="sim-card-progress-pct" class="font-mono">68%</span>
+                </div>
+                <div class="sim-progress-track">
+                  <div class="sim-progress-fill" id="sim-card-progress-fill" style="width:68%;"></div>
+                </div>
+              </div>
+
+              <!-- 5 Stage Milestones -->
+              <div class="sim-stages-stepper">
+                <div class="stage-step" id="stage-milestone-received">
+                  <span class="stage-step-icon">📝</span>
+                  <span class="stage-step-title">Received</span>
+                </div>
+                <div class="stage-step" id="stage-milestone-prep">
+                  <span class="stage-step-icon">🍳</span>
+                  <span class="stage-step-title">Preparing</span>
+                </div>
+                <div class="stage-step" id="stage-milestone-pickup">
+                  <span class="stage-step-icon">📦</span>
+                  <span class="stage-step-title">Ready</span>
+                </div>
+                <div class="stage-step active" id="stage-milestone-transit">
+                  <span class="stage-step-icon">🛵</span>
+                  <span class="stage-step-title">Transit</span>
+                </div>
+                <div class="stage-step" id="stage-milestone-delivered">
+                  <span class="stage-step-icon">✅</span>
+                  <span class="stage-step-title">Delivered</span>
+                </div>
+              </div>
+
+              <div style="font-size:0.75rem; color:var(--text-muted); background:var(--bg-subtle); padding:0.6rem; border-radius:var(--radius-sm);" id="sim-stage-explainer-text">
+                Courier moving along road route towards delivery location.
+              </div>
+              <div style="font-size:0.75rem; color:var(--text-subtle);">
+                Geodesic Haversine Distance: <span class="font-mono" id="sim-card-haversine">2.77 km</span>
+              </div>
+            </div>
+
+            <!-- Map Column -->
+            <div class="card map-card">
+              <div class="card-header" style="margin-bottom:0.5rem; padding-bottom:0.4rem;">
+                <span style="font-weight:700; font-size:0.85rem;">Live Fleet Dispatch Map</span>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Leaflet.js + CartoDB Positron</span>
+              </div>
+              <div class="map-frame-wrapper" id="sim-map"></div>
+              <div class="map-frame-wrapper hidden" id="sim-map-fallback" style="display:flex; align-items:center; justify-content:center; background:#FFF;">
+                <span>Map loading fallback active</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- APPENDIX 3: FLEET AND ORDERS -->
+        <section id="tab-fleet" class="tab-pane">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">🛵</span>
+                <div>
+                  <h2>Fleet and Orders Management Grid</h2>
+                  <p class="card-subtitle">Inspect active dispatches, filter by lifecycle status, and register demo orders</p>
+                </div>
+              </div>
+              <div style="display:flex; gap:0.5rem;">
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-refresh-model-etas">🔄 Refresh Model ETAs</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-reset-fleet">↺ Reset Fleet</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-open-create-order">+ Create Order</button>
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1rem; flex-wrap:wrap;">
+              <input type="text" class="input-control" id="fleet-search-input" placeholder="Search order ID or meal type..." style="max-width:280px;">
+              <div class="drift-toggle-wrapper" id="fleet-filter-pills">
+                <button type="button" class="drift-toggle-btn active" data-filter="ALL">All (<span id="count-all">7</span>)</button>
+                <button type="button" class="drift-toggle-btn" data-filter="ACTIVE">Active (<span id="count-active">3</span>)</button>
+                <button type="button" class="drift-toggle-btn" data-filter="DELIVERED">Delivered (<span id="count-delivered">3</span>)</button>
+                <button type="button" class="drift-toggle-btn" data-filter="CANCELLED">Cancelled (<span id="count-cancelled">1</span>)</button>
+              </div>
+              <select class="form-control" id="fleet-sort-select" style="max-width:180px;">
+                <option value="id-asc">Order ID (Asc)</option>
+                <option value="duration-asc">Predicted ETA (Low-High)</option>
+                <option value="duration-desc">Predicted ETA (High-Low)</option>
+                <option value="distance-asc">Distance (Low-High)</option>
+              </select>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Type & City</th>
+                    <th>Status</th>
+                    <th>Predicted ETA</th>
+                    <th>Distance</th>
+                    <th>Actual / Progress</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="fleet-table-body">
+                  <!-- Loaded dynamically by app.js -->
+                </tbody>
+              </table>
+              <div id="fleet-empty-state" class="hidden" style="text-align:center; padding:2rem; color:var(--text-muted);">
+                No matching orders found.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- APPENDIX 4: SCENARIO LAB -->
+        <section id="tab-scenarios" class="tab-pane">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">⚖️</span>
+                <div>
+                  <h2>What-If Parameter Sensitivity Matrix</h2>
+                  <p class="card-subtitle">Empirical sensitivity analysis querying live <code>POST /predict</code> API with delta comparison</p>
+                </div>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-export-scenarios-csv">📥 Export Matrix CSV</button>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:0.5rem; margin-bottom:1rem; align-items:end;">
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Scenario Name</label>
+                <input type="text" class="input-control" id="scenario-name-input" value="Late Night Surge">
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Order Hour</label>
+                <select class="form-control" id="scenario-hour-select">
+                  <option value="20" selected>20:00 (Dinner)</option>
+                  <option value="16">16:00 (Afternoon)</option>
+                  <option value="23">23:00 (Late Night)</option>
+                  <option value="13">13:00 (Lunch)</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Day</label>
+                <select class="form-control" id="scenario-day-select">
+                  <option value="4" selected>Friday</option>
+                  <option value="5">Saturday</option>
+                  <option value="6">Sunday</option>
+                  <option value="0">Monday</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Meal Type</label>
+                <select class="form-control" id="scenario-type-select">
+                  <option value="Meal" selected>Meal</option>
+                  <option value="Snack">Snack</option>
+                  <option value="Buffet">Buffet</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Festival</label>
+                <select class="form-control" id="scenario-festival-select">
+                  <option value="No" selected>No</option>
+                  <option value="Yes">Yes (+Surge)</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">City</label>
+                <select class="form-control" id="scenario-city-select">
+                  <option value="Metropolitian" selected>Metro</option>
+                  <option value="Urban">Urban</option>
+                </select>
+              </div>
+              <div>
+                <button type="button" class="btn btn-primary" id="btn-add-scenario" style="width:100%;">+ Add</button>
+              </div>
+            </div>
+
+            <div class="table-responsive" id="scenarios-table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Scenario Name</th>
+                    <th>Hour & Day</th>
+                    <th>Type</th>
+                    <th>Festival</th>
+                    <th>City</th>
+                    <th>Predicted ETA</th>
+                    <th>Delta vs Base</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="scenarios-table-body">
+                  <!-- Populated by app.js -->
+                </tbody>
+              </table>
+            </div>
+            <div id="scenarios-empty-state" class="hidden" style="text-align:center; padding:2rem; color:var(--text-muted);">
+              No scenarios added yet.
+            </div>
+          </div>
+        </section>
+
+        <!-- APPENDIX 5: DELAY ANALYTICS -->
+        <section id="tab-delay" class="tab-pane">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">⏱️</span>
+                <div>
+                  <h2>Simulated Operational Outcomes & Delay Analytics</h2>
+                  <p class="card-subtitle">SLA attribution: Signed Error = Simulated Actual - Model Predicted Duration</p>
+                </div>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-clear-delay-history">Clear History</button>
+            </div>
+
+            <div class="kpi-stat-grid" style="margin-bottom:1rem;">
+              <div class="stat-card">
+                <span class="stat-label">On-Time Deliveries</span>
+                <span class="stat-value text-success" id="delay-count-on-time">2</span>
+                <span class="stat-desc">&plusmn;3.0 min threshold</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Early Deliveries</span>
+                <span class="stat-value text-accent" id="delay-count-early">1</span>
+                <span class="stat-desc">&lt; -3.0 min threshold</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Late Deliveries</span>
+                <span class="stat-value text-danger" id="delay-count-late">0</span>
+                <span class="stat-desc">&gt; +3.0 min threshold</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">SLA Compliance</span>
+                <span class="stat-value" id="delay-sla-pct">100%</span>
+                <span class="stat-desc">MAE: <strong id="delay-mean-abs-error">1.1 min</strong></span>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Predicted ETA</th>
+                    <th>Simulated Actual</th>
+                    <th>Signed Difference</th>
+                    <th>Absolute Error</th>
+                    <th>SLA Classification</th>
+                    <th>Simulated Attribution</th>
+                  </tr>
+                </thead>
+                <tbody id="delay-table-body">
+                  <!-- Loaded by app.js -->
+                </tbody>
+              </table>
+              <div id="delay-empty-state" class="hidden" style="text-align:center; padding:2rem; color:var(--text-muted);">
+                No completed deliveries yet. Run dispatches in simulation to view delay analytics.
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Sidebar Backdrop for Mobile/Drawer -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <!-- Create Order Modal -->
+  <div class="modal-overlay hidden" id="modal-create-order">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size:1.15rem; font-weight:700;">Create Simulated Order</h3>
+        <button type="button" class="btn-dismiss" id="btn-close-modal">✕</button>
+      </div>
+
+      <div class="alert-banner alert-danger hidden" id="modal-error-banner" style="margin:0 0 1rem 0;">
+        <span class="alert-icon">⚠️</span>
+        <div class="alert-body" id="modal-error-text">API Offline</div>
+      </div>
+
+      <form id="form-create-order">
+        <div class="form-group">
+          <label class="form-label" for="mod-order-id">Order Identifier</label>
+          <input type="text" class="input-control font-mono" id="mod-order-id" value="KOR-LIVE-99" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+          <div class="form-group">
+            <label class="form-label">Restaurant Lat / Lon</label>
+            <input type="number" step="0.0001" class="input-control font-mono" id="mod-rest-lat" value="12.9784" required>
+            <input type="number" step="0.0001" class="input-control font-mono" id="mod-rest-lon" value="77.6408" required style="margin-top:0.35rem;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Customer Lat / Lon</label>
+            <input type="number" step="0.0001" class="input-control font-mono" id="mod-cust-lat" value="12.9912" required>
+            <input type="number" step="0.0001" class="input-control font-mono" id="mod-cust-lon" value="77.6534" required style="margin-top:0.35rem;">
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.5rem;">
+          <div class="form-group">
+            <label class="form-label" for="mod-order-hour">Hour</label>
+            <input type="number" min="0" max="23" class="input-control font-mono" id="mod-order-hour" value="19" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="mod-day-of-week">Day (0-6)</label>
+            <input type="number" min="0" max="6" class="input-control font-mono" id="mod-day-of-week" value="5" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="mod-order-type">Type</label>
+            <select class="form-control" id="mod-order-type">
+              <option value="Meal">Meal</option>
+              <option value="Snack" selected>Snack</option>
+              <option value="Drinks">Drinks</option>
+              <option value="Buffet">Buffet</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+          <div class="form-group">
+            <label class="form-label" for="mod-festival">Festival</label>
+            <select class="form-control" id="mod-festival">
+              <option value="No" selected>No</option>
+              <option value="Yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="mod-city">City Tier</label>
+            <select class="form-control" id="mod-city">
+              <option value="Metropolitian">Metro</option>
+              <option value="Urban" selected>Urban</option>
+              <option value="Semi-Urban">Semi-Urban</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-order">⚡ Predict & Create Order</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="app.js"></script>
+</body>
+</html>

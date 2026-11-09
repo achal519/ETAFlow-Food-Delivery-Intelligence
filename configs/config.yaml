@@ -1,0 +1,117 @@
+# ETAFlow Configuration Specification
+
+project:
+  name: "ETAFlow"
+  version: "0.1.0"
+  description: "ML-Powered Food Delivery ETA & Delay Intelligence"
+
+data:
+  raw_dir: "data/raw"
+  raw_file: "data/raw/zomato_cleaned.csv"
+  processed_dir: "data/processed"
+  reference_dir: "data/reference"
+  # Target definition:
+  # Raw target column name from verified public dataset (zomato_cleaned.csv)
+  raw_target_column: "Time_taken (min)"
+  # Internal canonical target name used across ETAFlow code and models
+  target_column: "delivery_duration_min"
+  # Column mapping: converts raw CSV column names into clean, internal project names
+  column_mapping:
+    "Time_taken (min)": "delivery_duration_min"
+    "Restaurant_latitude": "restaurant_lat"
+    "Restaurant_longitude": "restaurant_lon"
+    "Delivery_location_latitude": "customer_lat"
+    "Delivery_location_longitude": "customer_lon"
+    "Time_Orderd": "order_time"
+    "Time_Order_picked": "pickup_time"
+  # Strict constraint: No late delivery binary label will be created without verified SLA/thresholds.
+  derived_delay_target_enabled: false
+
+features:
+  tier1_core_booking:
+    numeric:
+      - "distance_km"
+      - "Restaurant_latitude"
+      - "Restaurant_longitude"
+      - "Delivery_location_latitude"
+      - "Delivery_location_longitude"
+      - "order_hour"
+      - "day_of_week"
+      - "is_weekend"
+    categorical:
+      - "Type_of_order"
+      - "Festival"
+      - "City"
+  tier2_unverified_context:
+    enabled: false # Default: quarantined to guarantee zero lookahead bias
+    categorical:
+      - "Weather_conditions"
+      - "Road_traffic_density"
+
+timing_semantics:
+  # Prediction stage: Booking-time vs. Dispatch/Pickup-time
+  # Prediction-time feature availability must strictly adhere to what is known at inference time.
+  stage: "booking_time" # Options: booking_time, dispatch_time
+  leakage_prevention:
+    # Explicitly blacklisted columns to prevent target leakage and timing leakage
+    disallowed_at_booking:
+      - "delivery_speed"             # Derived directly from target duration (severe target leakage)
+      - "Time_taken (min)"           # Raw target label
+      - "delivery_duration_min"      # Canonical target label
+      - "Time_Order_picked"          # Pickup timestamp (only known after courier reaches restaurant)
+      - "actual_pickup_time"
+      - "actual_transit_time"
+      - "rider_dropoff_notes"
+      - "delivery_status_timestamp"
+      - "Delivery_person_ID"
+      - "Delivery_person_Age"
+      - "Delivery_person_Ratings"
+      - "Vehicle_condition"
+      - "Type_of_vehicle"
+      - "multiple_deliveries"
+      - "ID"
+
+validation:
+  test_size: 0.2
+  random_state: 42
+  strategy: "train_test_split" # Options: train_test_split, temporal_split (if timestamps verified)
+
+artifacts:
+  train_features_csv: "data/processed/train_features.csv"
+  train_target_csv: "data/processed/train_target.csv"
+  test_features_csv: "data/processed/test_features.csv"
+  test_target_csv: "data/processed/test_target.csv"
+  preprocessor_joblib: "models/preprocessor.joblib"
+  dummy_joblib: "models/dummy_regressor.joblib"
+  ridge_joblib: "models/ridge_regressor.joblib"
+  random_forest_joblib: "models/random_forest_regressor.joblib"
+
+models:
+  baseline:
+    algorithm: "mean_regressor"
+    strategy: "mean"
+  linear:
+    algorithm: "ridge_regression"
+    alpha: 1.0
+    random_state: 42
+  random_forest:
+    algorithm: "random_forest_regressor"
+    n_estimators: 100
+    max_depth: 16
+    min_samples_leaf: 4
+    n_jobs: -1
+    random_state: 42
+
+evaluation:
+  metrics:
+    - "mae"
+    - "rmse"
+    - "mape"
+
+api:
+  host: "127.0.0.1"
+  port: 8000
+  model_name: "random_forest_regressor"
+  model_artifact: "models/random_forest_regressor.joblib"
+  preprocessor_artifact: "models/preprocessor.joblib"
+
